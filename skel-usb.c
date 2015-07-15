@@ -25,6 +25,7 @@
 // Molole include
 #include <flash/flash.h>
 #include <error/error.h>
+#include <uart/uart.h>
 
 #include "thymio-buffer.h"
 #include <vm/natives.h>
@@ -420,6 +421,11 @@ int init_aseba_and_fifo(void) {
 		usb_uart_init();
 	
 	_USB1IP = PRIO_COMMUNICATION;
+    
+    uart_init(2, 115200, 0, // UART2, 115200 bps, no hardware RTS/CTS
+              0, // TODO: byte_received_callback
+              0, // TODO: tx_ready_callback
+              6, 0); // high priority, no user data
 
 	AsebaVMInit(&vmState);
 	vmVariables.id = vmState.nodeId;
