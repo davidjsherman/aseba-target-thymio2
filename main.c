@@ -264,7 +264,7 @@ void switch_off(void) {
 	_MI2C3IE = 0;
 	
 	
-	ntc_shutdown();
+//	ntc_shutdown();  // mode_uart rewires NTC ports RP16 and RP21 to UART2
 	rc5_shutdown();
 
 	CHARGE_500MA = 0; 
@@ -400,7 +400,7 @@ int main(void)
         
 	log_init(); // We will need to read vbat to be sure we can flash.
 
-	ntc_init(ntc_callback, PRIO_1KHZ);
+//	ntc_init(ntc_callback, PRIO_1KHZ);  // mode_uart rewires NTC ports RP16 and RP21 to UART2
 
 //	i2c_init(I2C_3);
 

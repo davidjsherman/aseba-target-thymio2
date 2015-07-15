@@ -42,8 +42,12 @@ static struct {
 	struct fifo tx;
 } AsebaFifo;
 
-// No communication bus presents
-#define MODE_DISCONNECTED	0x2
+// No communication buses are present
+#define MODE_DISCONNECTED	0x4
+// UART and USB are connected (planned)
+#define MODE_UART       0x3
+// UART is connected
+#define MODE_UART       0x2
 // USB is connected _AND_ running (DTE bit set)
 #define MODE_USB		0x1
 // RF link is present

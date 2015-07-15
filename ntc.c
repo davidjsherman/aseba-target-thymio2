@@ -30,11 +30,19 @@
 static ntc_cb cb;
 static unsigned int calib;
 
-#define calib_off() do {_LATF3 = 0; }while(0)
-#define ntc_off() do{_LATB13 = 0;  _LATF3 = 0;} while(0)
-#define discharge_mode() do{_TRISG6 = 0; _TRISB13 = 0; } while(0)
-#define mesure_mode() do{_TRISG6 = 1; } while(0)
-#define calib_mode() do{_TRISG6 = 1; _TRISB13 = 1;} while(0)
+/* Disable NTC registers because mode_uart uses G6 for UART2 Rx and F3 for UART2 Tx
+ *
+ * #define calib_off() do { _LATF3 = 0; } while(0)
+ * #define ntc_off() do{ _LATB13 = 0; _LATF3 = 0;} while(0)
+ * #define discharge_mode() do{ _TRISG6 = 0; _TRISB13 = 0; } while(0)
+ * #define mesure_mode() do{ _TRISG6 = 1; } while(0)
+ * #define calib_mode() do{ _TRISG6 = 1; _TRISB13 = 1; } while(0)
+*/
+#define calib_off() do { } while(0)
+#define ntc_off() do{ } while(0)
+#define discharge_mode() do{ } while(0)
+#define mesure_mode() do{ } while(0)
+#define calib_mode() do{ } while(0)
 
 #define comparator_output_enable() do {_TRISG7 = 0; CM1CONbits.COE = 1;}while(0)
 #define comparator_output_disable() do{_TRISG7 = 1; CM1CONbits.COE = 0;}while(0)
@@ -85,10 +93,11 @@ static void calibrate(void) {
 	calib = 0;
 	
 	comparator_output_enable();
-	
-	asm volatile(	"disi #2\n"
-			"bset IC8CON1, #0\n" 
-			"bset LATF, #3\n");
+
+    // Disable NTC registers because mode_uart uses G6 for UART2 Rx and F3 for UART2 Tx
+    // asm volatile("disi #2\n"
+    //              "bset IC8CON1, #0\n"
+    //              "bset LATF, #3\n");
 	
 	while(!calib && counter++ < 1000) {
 		clock_delay_us(10);
@@ -167,9 +176,10 @@ void ntc_calibrate(void) {
 	
 	comparator_output_enable();
 	
-	asm volatile("disi #2\n"
-				"bset IC8CON1, #0\n"
-				"bset LATF, #3\n");
+    // Disable NTC registers because mode_uart uses G6 for UART2 Rx and F3 for UART2 Tx
+    // asm volatile("disi #2\n"
+    //              "bset IC8CON1, #0\n"
+    //              "bset LATF, #3\n");
 	
 }
 
